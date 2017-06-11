@@ -1,0 +1,40 @@
+<script src="/home/Cookie.js"></script>
+<script src="/home/Post.js"></script>
+
+
+<b><u>IMPORTANT</u></b><br>
+<br>
+This login is not secure. <br>
+Use a new password, one that you haven't used for anything else. <br>
+Note: The server is intended to be run in your LAN, so it's highly unlikely that your password will be stolen. <br>
+<br>
+<br>
+<br>
+
+Username: <input type="text" id="User"> <br>
+Password: <input type="password" id="Password"> <br>
+Confirm Password: <input type="password" id="ConfirmPass"> <br>
+<button onclick="go()">Create account</button>
+
+<script>
+
+function go() {
+	var user = document.getElementById("User").value
+	var pass = document.getElementById("Password").value
+	var confirm = document.getElementById("ConfirmPass").value
+	post("/serverside/newuser",{"Name":user,
+	"Password":pass,
+	"ConfirmPassword":confirm
+	},
+	function() {
+		if (http.responseText == "Ok") {
+			alert("User has been created successfully.")
+		}
+		else {
+			alert(http.responseText)
+		}
+	}
+	)
+}
+
+</script>

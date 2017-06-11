@@ -1,0 +1,20 @@
+<script>
+UsingCanvas = false
+ogg = true
+</script>
+<script src="LittleLib.js"></script>
+
+<script>
+
+function convert(code) {
+	var i = 0
+	newCode = code[0]
+	for (i in newCode["Stage"]["Scripts"]) {
+		for (c in newCode["Stage"]["Scripts"][i]["args"]) {
+			newCode["Stage"]["Scripts"][i]["args"][c] = {"Type":"Input","Input":newCode["Stage"]["Scripts"][i]["args"][c]}
+		}
+	}
+	save(JSON.stringify([newCode,code[1]]),"new code.txt")
+}
+
+</script>

@@ -1,0 +1,78 @@
+<center><canvas id="canvas" style="border: 2px solid black"></canvas></center>
+<script src="../Cookie.js"></script>
+
+<script>
+
+try {
+	getCookie
+}
+catch(err) {
+	location.href = "Index_Offline.html"
+}
+
+if (location.href.indexOf(".")) {
+	document.write("<br><br><font size='5'><center><a href='/'>Home</a><br><br></center></font>")
+}
+
+UsingCanvas = true
+canvas = document.getElementById("canvas")
+ctx = canvas.getContext("2d")
+document.bgColor = "orange"
+document.title = "Itch"
+
+
+onlineMode = true
+User = getCookie("Login")
+loading = true
+
+lastW = 0
+lastH = 0
+
+function scaleScreen() {
+	var newW = window.innerWidth/1.4
+	var newH = window.innerHeight/1.25
+	if ([lastW,lastH].toString() != [newW,newH].toString()) {
+		canvas.width = newW
+		canvas.height = newH
+		lastW = newW
+		lastH = newH
+	}
+}
+
+setInterval(scaleScreen,30)
+
+</script>
+
+<script src="Sounds/OggTester.js"></script>
+<script src="LittleLib.js"></script>
+
+<script>
+
+
+var id = location.href.split("#")[1]
+
+if (id != undefined) {
+	get("/home/Projects/" + id + ".json",function() {
+		var res = JSON.parse(http.responseText)
+		if (JSON.stringify(res[0]) != "{}") {
+			Project = res[0]
+			var i = 0
+			imgs = {}
+			for (i in Project["Stage"]["Imgs"]["IMGs"]) {
+				var c = Project["Stage"]["Imgs"]["IMGs"][i]["IMG"]
+				imgs[c] = new Image()
+				imgs[c].src = c
+			}
+		}
+		else {
+			Project = defaultProject
+		}
+		Loading = false
+	})
+}
+
+
+</script>
+
+<script src="Blocks.js"></script>
+<script src="Main.js"></script>

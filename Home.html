@@ -1,0 +1,57 @@
+<script src="/home/Cookie.js"></script>
+
+<center>
+	<font size=10>
+		<b>
+			<u>
+				Welcome to the Itch website!
+			</u>
+		</b>
+	</font>
+</center>
+
+<br><br><br><br><br>
+
+<script src="/home/Cookie.js"></script>
+<script src="/home/Post.js"></script>
+
+
+<script>
+
+if (getCookie("Login") == "") {
+	document.write("<center><font size=5>You are not currently logged in, please login below or sign up...</font><br><br>")
+	document.write("<a href='/home/Login'>Login</a><br>")
+	document.write("<a href='/home/Signup'>Sign up</a><br></center>")
+}
+else {
+	document.write("<center><font size=5>Welcome " + getCookie("Login") + "!</font><br>")
+	document.write("<button onclick='logout()'>Logout</button><br><br>")
+	document.write("<a href='/home/Myprojects'>My projects</a><br>")
+	document.write("<a href='/home/Profile#" + encodeURI(getCookie("Login")) + "'>My profile</a><br><br>")
+	document.write("<button onclick='search()'>Search</button><br></center>")
+}
+
+function search() {
+	searchUser = prompt("Enter a username...")
+	if (searchUser !== null) {
+		post("/serverside/users/listofprojects", {"Name":searchUser}, search1)
+	} 
+}
+
+function search1() {
+	if (http.responseText != "Error: Unknown user.") {
+		location.href = "/home/Profile#" + encodeURI(searchUser)
+	}
+	else {
+		alert("Error: Unknown user.")
+	}
+}
+
+
+function logout() {
+	deleteCookie("Login")
+	deleteCookie("Pass")
+	location.reload()
+}
+
+</script>
