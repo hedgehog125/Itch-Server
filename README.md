@@ -21,4 +21,8 @@ Note: You will need to enter a super user's password to install pip.
 You may already have it installed, so try running it.
 Run "BottleWebServer.py" using python 3+
 
-Enjoy! :)
+
+# Accessing
+When you run the server it should say "Listening on http://<your ip>:8000" simply copy this url into your browser.
+
+Enjoy! :D
