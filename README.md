@@ -4,13 +4,11 @@ The server for Itch, allows easy saving/loading and sharing projects with your L
 # Installing
 The Itch Server requires some software...
   * Python 3+
-  * Pip 3 (to install bottle)
   * Bottle
   
 Download python from www.python.org make sure you download python 3+
 # Mac users:
 Run the following commands in the terminal...
-  * sudo easy_install pip3
   * pip3 install bottle
 # Other OSs:
 Run the following commands in the terminal...
