@@ -23,6 +23,6 @@ Run "BottleWebServer.py" using python 3+
 
 
 # Accessing
-When you run the server it should say "Listening on http://<[your ip]>:8000" simply copy this url into your browser.
+When you run the server it should say "Listening on http://<[your ip]>:8000" simply copy the url that the server prints into your browser.
 
 Enjoy! :D
