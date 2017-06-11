@@ -4,11 +4,15 @@ The server for Itch, allows easy saving/loading and sharing projects with your L
 # Installing
 The Itch Server requires some software...
   * Python 3+
+  * Pip for python 3 (to install bottle)
+  * Brew (only for mac users)
   * Bottle
   
 Download python from www.python.org make sure you download python 3+
 # Mac users:
 Run the following commands in the terminal...
+  * /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  * brew install python3
   * pip3 install bottle
 # Other OSs:
 Run the following commands in the terminal...
