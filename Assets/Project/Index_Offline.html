@@ -10,6 +10,21 @@ canvas.height = screen.height/1.5
 document.bgColor = "orange"
 document.title = "Itch"
 
+lastW = 0
+lastH = 0
+
+function scaleScreen() {
+	var newW = window.innerWidth/1.4
+	var newH = window.innerHeight/1.25
+	if ([lastW,lastH].toString() != [newW,newH].toString()) {
+		canvas.width = newW
+		canvas.height = newH
+		lastW = newW
+		lastH = newH
+	}
+}
+
+setInterval(scaleScreen,30)
 
 </script>
 

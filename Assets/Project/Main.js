@@ -1,5 +1,5 @@
 // TODO:
-//	+ Allow reporter blocks to go in inputs.
+//	+ Allow reporter blocks to go in inputs. <- Doing, create user interface for putting them in though.
 //	+ More blocks/categories.
 //	+ Be able to make sprites.
 //	+ Project compilation.  <- Not sure how I will do this yet.
@@ -182,14 +182,14 @@ function triangle(x,y,dir) {
     return false
 }
 
-function block(id,x,y,args) {
+function block(id,x,y,args, outline) {
 	CanvasController.setTextCentre("start")
 	CanvasController.setTextYCentre("middle")
 	var i = 0
 	var X = x
 	var arg = 0
 	var item = 0
-	var Return = [] 
+	var Return = []
 	for (i in Blocks[id]["text"]) {
 		CanvasController.setFillColour(colours[Blocks[id]["cat"]])
 		CanvasController.setOutlineColour(colours[Blocks[id]["cat"]])
@@ -197,12 +197,39 @@ function block(id,x,y,args) {
 			var text = Blocks[id]["text"][i][1]
 			var width = CanvasController.measureTextWidth(text,5)
 			if (Blocks[id]["type"] == "Block") {
-				CanvasController.fillRect(X,y,width + 5,5)
+				if (outline) {
+					CanvasController.setFillColour("white")
+					if (i == 0) {
+						CanvasController.fillRect(X, y, width + 4, 5)	
+					}
+					if (i == (Blocks[id]["text"].length - 1)) {
+						CanvasController.fillRect(X + 1, y, width + 4, 5)
+					}
+					else {
+						CanvasController.fillRect(X + 1, y, width + 5, 5)
+					}
+				}
+				CanvasController.setFillColour(colours[Blocks[id]["cat"]])
+				CanvasController.fillRect(X, y, width + 4, 5)
 			}
 			else {
+				if (outline) {
+					CanvasController.setFillColour("white")
+					if (i == 0) {
+						CanvasController.fillRect(X, y, width + 4, 5)	
+					}
+					if (i == (Blocks[id]["text"].length - 1)) {
+						CanvasController.fillRect(X + 1, y, width + 4, 5)
+					}
+					else {
+						CanvasController.fillRect(X + 1, y, width + 4, 5)
+					}
+				}
+				CanvasController.setFillColour(colours[Blocks[id]["cat"]])
+				CanvasController.setOutlineColour(colours[Blocks[id]["cat"]])
 				CanvasController.setLineCap("round")
 				CanvasController.setStrokeWidth(25)
-				CanvasController.line(X + 5, y + 2.5, X + width, y + 2.5)
+				CanvasController.line(X + 4, y + 2.5, X + width, y + 2.5)
 			}
 			CanvasController.setFillColour("black")
 			CanvasController.text(text, X + 2.5, y + 2.5, 5)
@@ -220,42 +247,60 @@ function block(id,x,y,args) {
 					CanvasController.setLineCap("square")
 				}
 			}
-			if (text === undefined) {
-				text = Blocks[id]["text"][item][3]
+			if (args[arg] === undefined) {
+				var text = Blocks[id]["text"][item][3]
+				var type = "Input"
 			}
 			else {
 				var text = args[arg]["Input"]
+				var type = args[arg]["Type"]
 			}
-			var width = CanvasController.measureTextWidth(text,4)
+			if (type == "Input") {
+				var width = CanvasController.measureTextWidth(text,4)
+			}
 			if (Blocks[id]["type"] == "Block") {
 				CanvasController.fillRect(X,y,width + 10,5)
 			}
 			else {
-				CanvasController.setLineCap("round")
-				CanvasController.setStrokeWidth(25)
-				CanvasController.line(X + 5, y + 2.5, X + width + 5, y + 2.5)
+				if (type == "Input") {
+					CanvasController.setOutlineColour(colours[Blocks[id]["cat"]])
+					CanvasController.setLineCap("round")
+					CanvasController.setStrokeWidth(25)
+					CanvasController.line(X + 5, y + 2.5, X + width + 5, y + 2.5)
+				}
 			}
-			CanvasController.line(X + 2.5, y + 2.5, X + width + 2.5, y + 2.5)
+			CanvasController.setOutlineColour("white")
+			if (type == "Input") {
+				CanvasController.line(X + 2.5, y + 2.5, X + width + 2.5, y + 2.5)
+			}
+			else {
+				var width = block(text["id"], X, y, text["args"], true)[1]
+				X = X - 7
+			}
 			if (MouseX >= X + 2.5 & MouseX <= X + width + 2.5) {
 				if (MouseY >= y - 12.5 & MouseY <= y + 12.5) {
 					Return[Return.length] = [arg,item]
 				}
 			}
 			CanvasController.setFillColour("black")
-			CanvasController.text(text, X + 2.5, y + 2.5, 4)
+			if (type == "Input") {
+				CanvasController.text(text, X + 2.5, y + 2.5, 4)
+			}
 			X = X + 7 + width
 			arg++
 		}
 		item++
 	}
+
 	if (MouseX >= x & MouseX <= X) {
 		if (MouseY >= y & MouseY <= y + 5) {
 			Return[Return.length] = "touching"
 		}
 	}
 	CanvasController.setLineCap("round")
-	return [Return,X-x]
+	return [Return, X-x]
 }
+
 
 function blockChooser() {
 	var i = 0
@@ -325,20 +370,154 @@ function blockChooser() {
 	CanvasController.line(150,0,150,150)
 }
 
+function tidy(list) {
+	var i = 0
+	var newList = []
+	for (i in list) {
+		if (list[i] !== undefined) {
+			newList[newList.length] = list[i]
+		}
+	}
+	return newList
+}
+
 function scripts() {
 	if (SelectedSprite == "Stage") {
 		var spriteScripts = Project["Stage"]["Scripts"]
 	}
+	var i = 0
+	for (i in spriteScripts) {
+		var c = spriteScripts[i]
+		if (c !== undefined) {
+			if (SelectedBlock == i) {
+				if (SelectedArg == -1) {
+					c["x"] = MouseX - (c["width"] / 2)
+					c["y"] = MouseY - 2.5
+				}
+				else {
+					if (lastKey != "" & ! keyCooldown) {
+						var input = c["args"][SelectedArg]["Input"]
+						if (lastKey == 13) {
+							SelectedBlock = -1
+							SelectedArg = -1
+							keyCooldown = true
+						}
+					}
+				}
+			}
+			if (SelectedBlock == -1 & c["x"] < 140) {
+				spriteScripts[i] = undefined
+			}
+		}
+		else {
+			spriteScripts = tidy(spriteScripts)
+		}
+		if (spriteScripts[SelectedBlock] !== undefined) {
+			if (c["snappedWith"] != -1) {
+				if (spriteScripts[c["snappedWith"]]["snappedTo"] != c["snappedWith"]) {
+					c["snappedWith"] = -1
+				}
+			}
+			if (c["snappedTo"] != -1 & spriteScripts[c["snappedTo"]] !== undefined) {
+				c["x"] = spriteScripts[c["snappedTo"]]["x"]
+				c["y"] = spriteScripts[c["snappedTo"]]["y"] + 4.5
+			}
+		}
+		if (c !== undefined) {
+			returned = block(c["id"],c["x"],c["y"],c["args"])
+			c["width"] = returned[1]
+			if (returned[0].indexOf("touching") > -1) {
+				if (returned[0].length > 1) {
+					if (click == 1 & ! clickCooldown) {
+						if (SelectedBlock == -1) {
+							if (spriteScripts[i]["args"][returned[0][0][0]]["Type"] == "Input") {
+								SelectedArg = JSON.parse(returned[0][0][0])
+								SelectedBlock = JSON.parse(i)
+								var before = c["args"][SelectedArg]["Input"]
+								var typeofArg = Blocks[c["id"]]["text"][returned[0][0][1]][1]
+								c["args"][SelectedArg]["Input"] = prompt("Enter " + typeofArg + "...", c["args"][SelectedArg]["Input"])
+								if (c["args"][SelectedArg]["Input"] == null | c["args"][SelectedArg]["Input"] == "" | ! (checkInput(typeofArg, c["args"][SelectedArg]["Input"]))) {
+									c["args"][SelectedArg]["Input"] = before
+								}
+								click = 0
+								clickCooldown = true
+								SelectedArg = -1
+								SelectedBlock = -1
+							}
+							else {
+								var input = spriteScripts[i]["args"][returned[0][0][0]]["Input"]
+								spriteScripts[spriteScripts.length] = {
+									"x": 0,
+									"y": 0,
+									"id": input["id"],
+									"args": input["args"],
+									"width": 0,
+									"snappedTo": -1,
+									"snappedWith": -1
+								}
+								clickCooldown = true
+								SelectedArg = returned[0][0][0]
+								SelectedBlock = spriteScripts.length - 1
+								var a = 0
+								var numOfArgs = -1
+								var defaultArg = 0
+								for (a in Blocks[spriteScripts[i]["id"]]["text"]) {
+									var b = Blocks[spriteScripts[i]["id"]]["text"][a]
+									if (b[0] == "arg") {
+										numOfArgs++
+										if (numOfArgs == SelectedArg) {
+											defaultArg = Blocks[spriteScripts[i]["id"]]["text"][a][3]
+										}
+									}
+								}
+								spriteScripts[i]["args"][returned[0][0][0]]["Input"] = defaultArg
+								spriteScripts[i]["args"][returned[0][0][0]]["Type"] = "Input"
+								SelectedArg = -1
+							}
+						}
+						else {
+							if (i != SelectedBlock) {
+								SelectedArg = JSON.parse(returned[0][0][0])
+								c["args"][SelectedArg]["Type"] = "Block"
+								c["args"][SelectedArg]["Input"] = {
+									"args": spriteScripts[SelectedBlock]["args"],
+									"id": spriteScripts[SelectedBlock]["id"]
+								}
+								clickCooldown = true
+								spriteScripts[SelectedBlock] = undefined
+								spriteScripts = tidy(spriteScripts)
+								SelectedArg = -1
+								SelectedBlock = -1
+								playSound("Snap")
+							}
+						}
+					}
+				}
+				else {
+					if (click == 1 & (! clickCooldown) & SelectedBlock == -1) {
+						SelectedBlock = JSON.parse(i)
+						SelectedArg = -1
+						if (c["snappedTo"] != -1) {
+							spriteScripts[c["snappedTo"]]["snappedWith"] = -1
+							c["snappedTo"] = -1
+						}
+						clickCooldown = true
+					}
+				}
+			 }
+		}
+		
+	}
 	if (click == 1 & ! clickCooldown & SelectedBlock != -1 & SelectedArg == -1) {
 		if (MouseX > 150) {
-			spriteScripts[SelectedBlock]["x"] = MouseX
-			spriteScripts[SelectedBlock]["y"] = MouseY
+			spriteScripts[SelectedBlock]["x"] = MouseX - (spriteScripts[SelectedBlock]["width"] / 2)
+			spriteScripts[SelectedBlock]["y"] = MouseY - 2.5
 			spriteScripts[SelectedBlock]["snappedTo"] = -1
 			var i = 0
 			while (i < Object.keys(spriteScripts).length) {
 				if (SelectedBlock != i & spriteScripts[i]["snappedWith"] == -1 & spriteScripts[i]["snappedTo"] != SelectedBlock) {
 					if (spriteScripts[SelectedBlock]["x"] >= spriteScripts[i]["x"] - 2.5 & spriteScripts[SelectedBlock]["x"] <= spriteScripts[i]["x"] + spriteScripts[i]["width"] + 2.5) {
-						if (spriteScripts[SelectedBlock]["y"] >= spriteScripts[i]["y"] - 4 & spriteScripts[SelectedBlock]["y"] - 5 <= spriteScripts[i]["y"] + 2) {
+						if (spriteScripts[SelectedBlock]["y"] >= spriteScripts[i]["y"] + 0.5 & spriteScripts[SelectedBlock]["y"] <= spriteScripts[i]["y"] + 8) {
 							spriteScripts[SelectedBlock]["snappedTo"] = i
 							spriteScripts[i]["snappedWith"] = SelectedBlock
 							playSound("Snap")
@@ -366,68 +545,6 @@ function scripts() {
 			SelectedBlock = -1
 			SelectedArg = -1
 			clickCooldown = true
-		}
-	}
-	var i = 0
-	for (i in spriteScripts) {
-		var c = spriteScripts[i]
-		if (SelectedBlock == i) {
-			if (SelectedArg == -1) {
-				c["x"] = MouseX
-				c["y"] = MouseY
-			}
-			else {
-				if (lastKey != "" & ! keyCooldown) {
-					var input = c["args"][SelectedArg]["Input"]
-					if (lastKey == 13) {
-						SelectedBlock = -1
-						SelectedArg = -1
-						keyCooldown = true
-					}
-				}
-			}
-		}
-		if (spriteScripts[SelectedBlock] !== undefined) {
-			if (c["snappedWith"] != -1) {
-				if (spriteScripts[c["snappedWith"]]["snappedTo"] != c["snappedWith"]) {
-					c["snappedWith"] = -1
-				}
-			}
-			if (c["snappedTo"] != -1 & spriteScripts[c["snappedTo"]] !== undefined) {
-				c["x"] = spriteScripts[c["snappedTo"]]["x"]
-				c["y"] = spriteScripts[c["snappedTo"]]["y"] + 4.5
-			}
-		}
-		returned = block(c["id"],c["x"],c["y"],c["args"])
-		c["width"] = returned[1]
-		if (returned[0].indexOf("touching") > -1) {
-			if (returned[0].length > 1) {
-				if (click == 1 & ! clickCooldown) {
-					SelectedArg = JSON.parse(returned[0][0][0])
-					SelectedBlock = JSON.parse(i)
-					var before = c["args"][SelectedArg]["Input"]
-					var typeofArg = Blocks[c["id"]]["text"][returned[0][0][1]][1]
-					c["args"][SelectedArg]["Input"] = prompt("Enter " + typeofArg + "...", c["args"][SelectedArg]["Input"])
-					if (c["args"][SelectedArg]["Input"] == null | c["args"][SelectedArg]["Input"] == "" | ! (checkInput(typeofArg, c["args"][SelectedArg]["Input"]))) {
-						c["args"][SelectedArg]["Input"] = before
-					}
-					click = 0
-					clickCooldown = true
-					SelectedArg = -1
-					SelectedBlock = -1
-				}
-			}
-			else {
-				if (click == 1 & ! clickCooldown) {
-					SelectedBlock = JSON.parse(i)
-					SelectedArg = -1
-					if (c["snappedTo"] != -1) {
-						spriteScripts[c["snappedTo"]]["snappedWith"] = -1
-						c["snappedTo"] = -1
-					}
-					clickCooldown = true
-				}
-			}
 		}
 	}
 	if (SelectedSprite == "Stage") {
