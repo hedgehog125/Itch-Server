@@ -1,5 +1,5 @@
 // TODO:
-//	+ Allow reporter blocks to go in inputs. <- Doing, create user interface for putting them in though.
+//	+ Allow reporter blocks to go in inputs. <- Done.
 //	+ More blocks/categories.
 //	+ Be able to make sprites.
 //	+ Project compilation.  <- Not sure how I will do this yet.

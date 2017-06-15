@@ -45,8 +45,26 @@ function range(start, stop, step) {
 
 
 function mouse(e) {
-	MouseX = (event.offsetX/canvas.width)*Width
-	MouseY = (event.offsetY/canvas.height)*Height
+	MouseX = (e.offsetX / canvas.width) * Width
+	MouseY = (e.offsetY / canvas.height) * Height
+}
+
+function tapDown(e) {
+	click = 1
+	MouseX = (e.gesture.touches[0].clientX / canvas.width) * Width
+	MouseY = (e.gesture.touches[0][0].clientY / canvas.height) * Height
+	e.preventDefault()
+}
+
+function tapUp(e) {
+	click = 0
+	MouseX = (e.gesture.touches[0].clientX / canvas.width) * Width
+	MouseY = (e.gesture.touches[0].clientY / canvas.height) * Height
+}
+
+function tapMove(e) {
+	MouseX = (e.gesture.touches[0].clientX / canvas.width) * Width
+	MouseY = (e.gesture.touches[0].clientY / canvas.height) * Height
 }
 
 function playSound(src) {
@@ -301,6 +319,9 @@ document.addEventListener("keyup", keyUp, false)
 document.addEventListener("keydown", keyDown, false)
 if (UsingCanvas) {
 	canvas.addEventListener("mousemove", mouse, false)
+	canvas.addEventListener("touchstart", tapDown, false)
+	canvas.addEventListener("touchstart", tapMove, false)
+	canvas.addEventListener("touchend", tapUp, false)
 }
 document.addEventListener("mousedown", mouseDown, false)
 document.addEventListener("mouseup", mouseUp, false)
