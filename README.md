@@ -14,7 +14,13 @@ Run the following commands in the terminal...
   * /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   * brew install python3
   * pip3 install bottle
-# Other OSs:
+  
+# Windows users:
+  Do the following...
+    * Go to https://www.windowscentral.com/how-install-bash-shell-command-line-windows-10 to find out how to get the command line.
+    * Follow the instructions for Linux.
+
+# Linux based users:
 Run the following commands in the terminal...
   * sudo apt-get install python3-pip
   * pip3 install bottle
