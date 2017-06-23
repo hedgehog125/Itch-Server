@@ -5,6 +5,7 @@
 //	+ Project compilation.  <- Not sure how I will do this yet.
 //	+ Be able to import costumes.
 //	+ Be able to import sounds.
+//  + Script scrollbar.
 //	+ Text box.
 //	+ Console.
 //	+ Text version.
@@ -149,7 +150,7 @@ function main() {
 function checkInput(type,arg) {
 	if (type == "number") {
 		var i = 0
-		var numbers = ["0","1","2","3","4","5","6","7","8","9"]
+		var numbers = ["0","1","2","3","4","5","6","7","8","9","."]
 		for (i in arg) {
 			if (numbers.indexOf(arg[i]) == -1) {
 				return false
@@ -515,14 +516,16 @@ function scripts() {
 			spriteScripts[SelectedBlock]["snappedTo"] = -1
 			var i = 0
 			while (i < Object.keys(spriteScripts).length) {
-				if (SelectedBlock != i & spriteScripts[i]["snappedWith"] == -1 & spriteScripts[i]["snappedTo"] != SelectedBlock) {
-					if (spriteScripts[SelectedBlock]["x"] >= spriteScripts[i]["x"] - 2.5 & spriteScripts[SelectedBlock]["x"] <= spriteScripts[i]["x"] + spriteScripts[i]["width"] + 2.5) {
-						if (spriteScripts[SelectedBlock]["y"] >= spriteScripts[i]["y"] + 0.5 & spriteScripts[SelectedBlock]["y"] <= spriteScripts[i]["y"] + 8) {
-							spriteScripts[SelectedBlock]["snappedTo"] = i
-							spriteScripts[i]["snappedWith"] = SelectedBlock
-							playSound("Snap")
-							spriteScripts[SelectedBlock]["x"] = spriteScripts[i]["x"]
-							spriteScripts[SelectedBlock]["y"] = spriteScripts[i]["y"] + 4.5
+				if (SelectedBlock != i) {
+					if (spriteScripts[i]["snappedWith"] == -1 & spriteScripts[i]["snappedTo"] != SelectedBlock) {
+						if (spriteScripts[SelectedBlock]["x"] >= spriteScripts[i]["x"] - 2.5 & spriteScripts[SelectedBlock]["x"] <= spriteScripts[i]["x"] + spriteScripts[i]["width"] + 2.5) {
+							if (spriteScripts[SelectedBlock]["y"] >= spriteScripts[i]["y"] + 0.5 & spriteScripts[SelectedBlock]["y"] <= spriteScripts[i]["y"] + 8) {
+								spriteScripts[SelectedBlock]["snappedTo"] = i
+								spriteScripts[i]["snappedWith"] = SelectedBlock
+								playSound("Snap")
+								spriteScripts[SelectedBlock]["x"] = spriteScripts[i]["x"]
+								spriteScripts[SelectedBlock]["y"] = spriteScripts[i]["y"] + 4.5 
+							}
 						}
 					}
 				}
