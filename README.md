@@ -39,4 +39,8 @@ Run "BottleWebServer.py" using python 3+
 When you run the server it should say "Listening on http://<[your ip]>:8000" simply copy the url that the server prints into your browser.
 You can also access the website from other computers, providing you're on the same network.
 
+# Stopping
+
+To stop the server simply just close the window, it might ask if you're sure but just press "Ok".
+
 Enjoy! :D
