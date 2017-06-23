@@ -1,6 +1,8 @@
 # Itch-Server
 The server for Itch, allows easy saving/loading and sharing projects with your LAN.
 
+# If you've ever installed one of my web servers on your computer skip straight to "Running".
+
 # Installing
 The Itch Server requires some software...
   * Python 3+
@@ -26,9 +28,12 @@ Run the following commands in the terminal...
   * pip3 install bottle
   
 Note: You will need to enter a super user's password to install pip.
-You may already have it installed, so try running it.
-Run "BottleWebServer.py" using python 3+
+To see if you have pip3, type pip3 into the terminal. It will tell you if you don't.
+To see if you have bottle, type python -c "import bottle" into the terminal. It will give you an error if you don't have it.
 
+
+# Running
+Run "BottleWebServer.py" using python 3+
 
 # Accessing
 When you run the server it should say "Listening on http://<[your ip]>:8000" simply copy the url that the server prints into your browser.
