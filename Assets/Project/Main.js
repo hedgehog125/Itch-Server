@@ -1,11 +1,14 @@
 // TODO:
 //	+ Allow reporter blocks to go in inputs. <- Done.
-//	+ More blocks/categories.
+//  + Header blocks. <- Done.
+//	+ More blocks/categories. <- Done.
+//  * Fix reporter blocks with arguments. <- Done.
 //	+ Be able to make sprites.
-//	+ Project compilation.  <- Not sure how I will do this yet.
+//  + The rest of the blocks.
+//	+ Project compilation.  <- I think I know how I'll do this.
 //	+ Be able to import costumes.
 //	+ Be able to import sounds.
-//  + Script scrollbar.
+//	+ Script scrollbar.
 //	+ Text box.
 //	+ Console.
 //	+ Text version.
@@ -47,12 +50,7 @@ catch(err) {
 
 
 var defaultImg = new Image()
-defaultImgSrc = "data:image/png;base64,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"
 defaultImg.src = defaultImgSrc
-colours = {
-	"Motion": "#0010FF",
-	"Looks": "#6600CC"
-}
 
 SelectedSprite = "Stage"
 SelectedArg = -1
@@ -197,7 +195,7 @@ function block(id,x,y,args, outline) {
 		if (Blocks[id]["text"][i][0] == "text") {
 			var text = Blocks[id]["text"][i][1]
 			var width = CanvasController.measureTextWidth(text,5)
-			if (Blocks[id]["type"] == "Block") {
+			if (Blocks[id]["type"] == "Block" | Blocks[id]["type"] == "Header") {
 				if (outline) {
 					CanvasController.setFillColour("white")
 					if (i == 0) {
@@ -230,7 +228,17 @@ function block(id,x,y,args, outline) {
 				CanvasController.setOutlineColour(colours[Blocks[id]["cat"]])
 				CanvasController.setLineCap("round")
 				CanvasController.setStrokeWidth(25)
-				CanvasController.line(X + 4, y + 2.5, X + width, y + 2.5)
+				if (i != (Blocks[id]["text"].length - 1) | Blocks[id]["text"].length == 1) {
+					CanvasController.line(X + 4, y + 2.5, X + width, y + 2.5)
+				}
+				else {
+					CanvasController.line(X + 4, y + 2.5, X + width, y + 2.5)
+				}
+				if (i != (Blocks[id]["text"].length - 1)) {
+					CanvasController.setLineCap("square")
+					CanvasController.line((X + width) - 2, y + 2.5, X + width + 7, y + 2.5)
+					CanvasController.setLineCap("round")
+				}
 			}
 			CanvasController.setFillColour("black")
 			CanvasController.text(text, X + 2.5, y + 2.5, 5)
@@ -259,7 +267,7 @@ function block(id,x,y,args, outline) {
 			if (type == "Input") {
 				var width = CanvasController.measureTextWidth(text,4)
 			}
-			if (Blocks[id]["type"] == "Block") {
+			if (Blocks[id]["type"] == "Block" | Blocks[id]["type"] == "Header") {
 				CanvasController.fillRect(X,y,width + 10,5)
 			}
 			else {
@@ -267,7 +275,17 @@ function block(id,x,y,args, outline) {
 					CanvasController.setOutlineColour(colours[Blocks[id]["cat"]])
 					CanvasController.setLineCap("round")
 					CanvasController.setStrokeWidth(25)
-					CanvasController.line(X + 5, y + 2.5, X + width + 5, y + 2.5)
+					if (i != (Blocks[id]["text"].length - 1) | Blocks[id]["text"].length == 1) {
+						CanvasController.line(X + 5, y + 2.5, X + width + 5, y + 2.5)
+					}
+					else {
+						CanvasController.line(X + 5, y + 2.5, X + width + 3.5, y + 2.5)
+					}
+					if (i != (Blocks[id]["text"].length - 1)) {
+						CanvasController.setLineCap("square")
+						CanvasController.line((X + width) + 2, y + 2.5, X + width + 5, y + 2.5)
+						CanvasController.setLineCap("round")
+					}
 				}
 			}
 			CanvasController.setOutlineColour("white")
@@ -287,12 +305,16 @@ function block(id,x,y,args, outline) {
 			if (type == "Input") {
 				CanvasController.text(text, X + 2.5, y + 2.5, 4)
 			}
-			X = X + 7 + width
+			X = X + 6 + width
 			arg++
 		}
 		item++
 	}
 
+	if (Blocks[id]["type"] == "Header") {
+		CanvasController.setFillColour(colours[Blocks[id]["cat"]])
+		CanvasController.fillRect(x + 2, y - 3, ((X  - x) / 1.2), 4)
+	}
 	if (MouseX >= x & MouseX <= X) {
 		if (MouseY >= y & MouseY <= y + 5) {
 			Return[Return.length] = "touching"
@@ -310,9 +332,9 @@ function blockChooser() {
 	if (triangle(101,5,1)) {
 		if (click == 1 & (! clickCooldown)) {
 			var selected = Object.keys(Categories).indexOf(Category)
-			selected++
-			if (selected > Object.keys(Categories).length - 1) {
-				selected = 0
+			selected--
+			if (selected < 0) {
+				selected = Object.keys(Categories).length - 1
 			}
 			Category = Object.keys(Categories)[selected]
 			clickCooldown = true
@@ -322,9 +344,9 @@ function blockChooser() {
 	if (triangle(149,5,-1)) {
 		if (click == 1 & (! clickCooldown)) {
 			var selected = Object.keys(Categories).indexOf(Category)
-			selected--
-			if (selected < 0) {
-				selected = Object.keys(Categories).length - 1
+			selected++
+			if (selected > Object.keys(Categories).length - 1) {
+				selected = 0
 			}
 			Category = Object.keys(Categories)[selected]
 			clickCooldown = true
@@ -336,6 +358,9 @@ function blockChooser() {
 	CanvasController.setTextCentre("start")
 	for (i in Categories[Category]) {
 		var c = Categories[Category][i]
+		if (Blocks[c]["type"] == "Header") {
+			y = y + 3
+		}
 		var returned = block(c,101,y,[])
 		if (returned[0][returned[0].length-1] == "touching" & click == 1 & ! clickCooldown) {
 			if (SelectedSprite == "Stage") {
