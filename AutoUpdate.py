@@ -182,7 +182,20 @@ AutoUpdate v2: Latest updates: ChangeLogs
                 if i[0].lower() == "file":
                     checkPath("Assets/" + i[1])
                     g = urllib.request.urlopen(database + "Assets/" + i[1])
-                    if open("Assets/" + i[1], 'b+w').read() != g.read():
+                    read = False
+                    try:
+                        currentContents = open("Assets/" + i[1], 'b').read()
+                        read = True
+                    except:
+                        read = False
+                    write = False
+                    if not read:
+                        write = True
+                    else:
+                        if currentContents != g.read():
+                            write = True
+                    
+                    if write:
                         writtenFile = True
                         with open("Assets/" + i[1], 'b+w') as f:
                             f.write(g.read())
