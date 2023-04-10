@@ -1,3 +1,5 @@
+**Update from future me**: This is probably horrifically insecure, so run at your own risk. Although it's not too bad since it's only designed to run on a LAN.
+
 # Itch-Server
 The server for Itch, allows easy saving/loading and sharing projects with your LAN.
 
